@@ -17,17 +17,94 @@ class Db(object):
         for table in cursor.fetchall():
             print(table)
 
-    def list_table(self):
+    def list_table_data(self, table):
         cursor = self.connection.cursor()
-        postgreSQL_select_Query = "select * from usuarios"
+        postgreSQL_select_Query = "select * from "+table
 
         cursor.execute(postgreSQL_select_Query)
-        print("Selecting rows from mobile table using cursor.fetchall")
-        mobile_records = cursor.fetchall() 
+        data = cursor.fetchall() 
    
-        print("Print each row and it's columns values")
-        for row in mobile_records:
-            print("teste", row)
+        for row in data:
+            print(row)
+            print("-------------------------------------")
+
+    def list_table_fields(self, table):
+        cursor = self.connection.cursor()
+        postgreSQL_select_Query = "select * from "+table
+        cursor.execute(postgreSQL_select_Query)
+        # cursor.execute("Select * FROM usuarios")
+
+        colnames = [desc[0] for desc in cursor.description]
+        print(colnames)
+
+    #=====================================================================================================================
+    def post_tipos_sensores(self):
+        cursor = self.connection.cursor()
+
+        # postgres_insert_query = """ INSERT INTO mobile (ID, MODEL, PRICE) VALUES (%s,%s,%s)"""
+        postgres_insert_query = """ INSERT INTO tipossensores (nome, descricao, unidade, tipo) VALUES (%s,%s,%s,%s)"""
+        record_to_insert = ('juca', 'One Plus 6', '950', 950)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        self.connection.commit()
+        count = cursor.rowcount
+        print (count, "Record inserted successfully into tipossensores table")
+
+    def get_all_tipos_sensores(self):
+        cursor = self.connection.cursor()
+        postgreSQL_select_Query = "select * from tipossensores"
+
+        cursor.execute(postgreSQL_select_Query)
+        data = cursor.fetchall() 
+        
+        return data    
+    
+    def get_tipos_sensores(self, rule):
+        cursor = self.connection.cursor()
+
+        postgreSQL_select_Query = "select * from tipossensores where " + rule
+
+        cursor.execute(postgreSQL_select_Query)
+        data = cursor.fetchall() 
+        
+        return data
+    #=====================================================================================================================
+    def post_sensores(self, name, uuid, status):
+        cursor = self.connection.cursor()
+
+        postgres_insert_query = """ INSERT INTO sensores (nome, uuid, status) VALUES (%s,%s,%s)"""
+        record_to_insert = (name, uuid, status)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        self.connection.commit()
+        count = cursor.rowcount
+        print (count, "Record inserted successfully into sensores table")
+
+    #=====================================================================================================================
+    def post_publicacoes(self, date_colect, value_colect, sensor_uuid):
+        cursor = self.connection.cursor()
+
+        postgres_insert_query = """ INSERT INTO publicacoes (datacoleta, valorcoletado, sensor_uuid) VALUES (%s,%s,%s)"""
+        record_to_insert = (date_colect, 29, sensor_uuid)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        self.connection.commit()
+        count = cursor.rowcount
+        print (count, "Record inserted successfully into publicacoes table")
+
+    #=====================================================================================================================
+    def post_servidoresborda(self, uuid, name, , value_colect, sensor_uuid):
+        cursor = self.connection.cursor()
+
+        postgres_insert_query = """ INSERT INTO publicacoes (datacoleta, valorcoletado, sensor_uuid) VALUES (%s,%s,%s)"""
+        record_to_insert = (date_colect, 29, sensor_uuid)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        self.connection.commit()
+        count = cursor.rowcount
+        print (count, "Record inserted successfully into publicacoes table")
+
+
 
     
 

@@ -34,10 +34,17 @@ class Subscriber(object):
         print(rc)
 
     def on_message(self, mosq, obj, msg):
-        print("-------Enviando para SC-------")
+        # print("--------------")
         msg_json = msg.payload.decode("utf-8")
         msg_json = json.loads(msg_json)
         print(msg_json)
+
+        self.save_data_edge_server(msg_json)
+
+
+
+
+
         
         # msg_json["uuid_edge"] = self.uuid
         
@@ -59,6 +66,10 @@ class Subscriber(object):
     def on_publish(self, mosq, obj, mid):
         #print("mid: "+str(mid))
         pass
+
+    def save_data_edge_server(self, data):
+        print(data)
+        # pass
 
 class client_loop (Thread):
     def __init__(self,client):

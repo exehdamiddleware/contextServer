@@ -15,7 +15,7 @@ import json
 # gw_uuid = "3aa027bd-4afc-461c-b353-c2535008f4ce"
 
 sub = Subscriber()
-sub.add_subscribe('contextServer_0b306a2b-b6c9-4bfd-9085-e50dc52e8e02')
+sub.add_subscribe('edgeServer')
 
 # time.sleep(1) 
 
