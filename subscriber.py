@@ -37,22 +37,22 @@ class Subscriber(object):
         print("-------Enviando para SC-------")
         msg_json = msg.payload.decode("utf-8")
         msg_json = json.loads(msg_json)
-        #print(msg_json)
-        
-        msg_json["uuid_edge"] = self.uuid
-        
-        date_now = datetime.datetime.now()
-        date_str = date_now.strftime("%Y-%m-%d %H:%M:%S")
-        
-        msg_json["date"] = date_str
-       
-        msg_json = json.dumps(msg_json)
-     
         print(msg_json)
-        topic = "teste"
+        
+        # msg_json["uuid_edge"] = self.uuid
+        
+        # date_now = datetime.datetime.now()
+        # date_str = date_now.strftime("%Y-%m-%d %H:%M:%S")
+        
+        # msg_json["date"] = date_str
+       
+        # msg_json = json.dumps(msg_json)
+     
+        # print(msg_json)
+        # topic = "teste"
 
-        pub = Publisher("200.132.96.10", 1883)
-        pub.on_publish(msg_json, topic)
+        # pub = Publisher("200.132.96.10", 1883)
+        # pub.on_publish(msg_json, topic)
 
         # print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
 
