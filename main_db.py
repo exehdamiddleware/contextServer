@@ -11,12 +11,21 @@ db.list_table_fields("tipossensores")
 # db.list_table_fields("tipossensores")             
 
 
-# data = db.get_all_tipos_sensores()
+# data = db.get_all_sensores()
 # data = db.get_tipos_sensores("tiposensor_id = 1")
-# print(data)
 
+
+data = db.get_all_publicacoes()
+print(data)
+
+print("===========================================")
+
+db.delete_all_publicacoes()
+data = db.get_all_publicacoes()
+print(data)
+print("===========================================")
 # db.post_tipos_sensores()
 
-db.post_sensores("New_sensor", "5627e626-6821-4897-ab47-bc9dfa395b85", True)
+# db.post_sensores("New_sensor", "5627e626-6821-4897-ab47-bc9dfa395b85", True)
 
 # db.post_publicacoes("2019-09-22 20:16:45", 19.5, "3109381b-ad7f-41b2-8262-1c2061f338f9")

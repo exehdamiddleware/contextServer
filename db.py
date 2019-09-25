@@ -80,6 +80,15 @@ class Db(object):
         count = cursor.rowcount
         print (count, "Record inserted successfully into sensores table")
 
+    def get_all_sensores(self):
+        cursor = self.connection.cursor()
+        postgreSQL_select_Query = "select * from sensores"
+
+        cursor.execute(postgreSQL_select_Query)
+        data = cursor.fetchall() 
+        
+        return data   
+
     #=====================================================================================================================
     def post_publicacoes(self, date_colect, value_colect, sensor_uuid):
         cursor = self.connection.cursor()
@@ -92,8 +101,24 @@ class Db(object):
         count = cursor.rowcount
         print (count, "Record inserted successfully into publicacoes table")
 
+    def get_all_publicacoes(self):
+        cursor = self.connection.cursor()
+        postgreSQL_select_Query = "select * from publicacoes"
+
+        cursor.execute(postgreSQL_select_Query)
+        data = cursor.fetchall() 
+        
+        return data
+
+    def delete_all_publicacoes(self):
+        cursor = self.connection.cursor()
+        postgreSQL_select_Query = "delete from publicacoes"
+
+        cursor.execute(postgreSQL_select_Query)
+        self.connection.commit()
+
     #=====================================================================================================================
-    def post_servidoresborda(self, uuid, name, , value_colect, sensor_uuid):
+    def post_servidoresborda(self, uuid, name, value_colect, sensor_uuid):
         cursor = self.connection.cursor()
 
         postgres_insert_query = """ INSERT INTO publicacoes (datacoleta, valorcoletado, sensor_uuid) VALUES (%s,%s,%s)"""
