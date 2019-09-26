@@ -8,10 +8,13 @@ import paho.mqtt.client as paho
 from publisher import *
 import json
 import datetime
+from db import *
+
 
 class Subscriber(object):
     """docstring for subscriber."""
     def __init__(self):
+        self.db = Db("postgres","UFPEL2o19","127.0.0.1","5432","context_server2")
         self.uuid = "b0013009-740b-4373-9aec-687c7818df06"
 
 
@@ -37,7 +40,7 @@ class Subscriber(object):
         # print("--------------")
         msg_json = msg.payload.decode("utf-8")
         msg_json = json.loads(msg_json)
-        print(msg_json)
+        #print(msg_json)
 
         self.save_data_edge_server(msg_json)
 
@@ -68,8 +71,29 @@ class Subscriber(object):
         pass
 
     def save_data_edge_server(self, data):
-        print(data)
-        # pass
+        #print(data)
+        #print(data['type'])
+        if data['type'] == "pub":
+            print(data['data'])
+            #self.db.get_servidoresborda()
+            self.db.post_publicacoes(data['date'],data['data'],data['uuid_sensor'])
+        elif data['type'] == "conf":
+            print("-------------data------------")
+            # Verificar se os SB estão cadastrados
+            if len(self.db.get_servidoresborda(data['edge']['uuid'])) == 0:
+                self.db.post_servidoresborda(data['edge']['uuid'], data['edge']['name'])
+            # Verificar se os GW estão cadastrados
+            #print("-------------Cadastro SC------------")
+            #print(data['gateway'][0]['uuid'])
+            if len(self.db.get_gateway(data['gateway'][0]['uuid'])) == 0:
+                #print("Entrou")
+                #print(data['gateway'][0]['uuid'])
+                #print(data['gateway'][0]['uuid'], data['gateway'][0]['name'])
+                self.db.post_gateway(data['gateway'][0]['uuid'],data['gateway'][0]['name'])
+
+                for sensor in data['sensors']:
+                    #print(sensor['name'],sensor['uuid'],sensor['pin'],sensor['driver'],data['gateway'][0]['uuid'],data['edge']['uuid'])
+                    self.db.post_sensores(sensor['name'],sensor['uuid'],sensor['pin'],sensor['driver'],True,data['gateway'][0]['uuid'],data['edge']['uuid'])
 
 class client_loop (Thread):
     def __init__(self,client):
