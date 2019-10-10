@@ -1,29 +1,28 @@
 
 from db import *
 
-db = Db("postgres","UFPEL2o19","127.0.0.1","5432","context_server2")
+db = Db("postgres","UFPEL2o19","127.0.0.1","5432","contextserver")
 
-print(len(db.get_gateway("042b8880-9f52-4042-9c06-e0f6f00e22b7"))==0)
-
-
+#print(len(db.get_gateway("042b8880-9f52-4042-9c06-e0f6f00e22b7"))==0)
 
 
-#data = db.get_servidoresborda("3aa027bd-4afc-461c-b353-c2535008f4ce")
 
-#print(data)
+#data = db.get_servidoresborda("4329cd4f-0865-44c8-83f8-2eba560b9173")
+
+#print(data[0][0])
 #db.delete_all_publicacoes()
 #db.delete_all_sensores()
 
-#db.post_gateway("3aa027bd-4afc-461c-b353-c2535008f4ce", "SB1")
+#db.post_gateway("3aa027bd-4afc-461c-b353-c2535008f4ce", "GW11", '4329cd4f-0865-44c8-83f8-2eba560b9173')
 
-
+#db.post_servidoresborda('b0013009-740b-4373-9aec-687c7818df06', 'SB_1')
 
 #db.list_table_fields("tipossensores")
 
 #print(db.get_all_sensores())
 #print("=========================")
 
-#db.post_sensores("Sensor_1","c08042cf-8610-4bd4-8bea-6320ce7c613b",True)
+print(len(db.get_sensores("d08042cf-8610-4bd4-8bea-6320ce7c613b")))
 
 #print(db.get_all_sensores())
 
@@ -48,6 +47,6 @@ print(len(db.get_gateway("042b8880-9f52-4042-9c06-e0f6f00e22b7"))==0)
 #print("===========================================")
 # db.post_tipos_sensores()
 
-# db.post_sensores("New_sensor", "5627e626-6821-4897-ab47-bc9dfa395b85", True)
+#db.post_sensores("New_sensor", "5627e626-6821-4897-ab47-bc9dfa395b85", 12, 'teste.py', True, '4329cd4f-0865-44c8-83f8-2eba560b9173', '4329cd4f-0865-44c8-83f8-2eba560b9173')
 
-# db.post_publicacoes("2019-09-22 20:16:45", 19.5, "3109381b-ad7f-41b2-8262-1c2061f338f9")
+#db.post_publicacoes("2019-09-22 20:16:45", 19.5, "4329cd4f-0865-44c8-83f8-2eba560b9173")

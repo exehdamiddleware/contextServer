@@ -71,14 +71,27 @@ class Db(object):
     #=====================================================================================================================
     def post_sensores(self, name, uuid, pin, driver, status, gateway, board):
         cursor = self.connection.cursor()
+        if (len(self.get_sensores(uuid)) ==0 ):
+            data = self.get_servidoresborda(board)
+            board_id = data[0][0]     
+            data = self.get_gateway(gateway)
+            gateway_id = data[0][0]
 
-        postgres_insert_query = """ INSERT INTO sensores (nome, uuid, status, pin, driver, gateway_uuid, servidorborda_uuid) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
-        record_to_insert = (name, uuid, status, pin, driver, gateway, board)
-        cursor.execute(postgres_insert_query, record_to_insert)
+            postgres_insert_query = """ INSERT INTO sensores (nome, uuid, status, pin, driver, gateway_id, servidorborda_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+            record_to_insert = (name, uuid, status, pin, driver, gateway_id, board_id)
+            cursor.execute(postgres_insert_query, record_to_insert)
 
-        self.connection.commit()
-        count = cursor.rowcount
-        print (count, "Record inserted successfully into sensores table")
+            self.connection.commit()
+            count = cursor.rowcount
+            print (count, "Record inserted successfully into sensores table")
+        else:
+            msg = "Tentativa de inserir um sensor com UUID que já existe"
+            postgres_insert_query = """ INSERT INTO error (msg, sensor_uuid, servidorborda_uuid, gateway_uuid) VALUES (%s,%s,%s,%s) """
+            record_to_insert = (msg, uuid, board, gateway)
+            cursor.execute(postgres_insert_query, record_to_insert)
+            self.connection.commit()
+            count = cursor.rowcount
+            print(count, "Record inserted successfully into error table")
 
     def get_sensores(self, uuid):
         cursor = self.connection.cursor()
@@ -97,10 +110,13 @@ class Db(object):
         self.connection.commit()
     #=====================================================================================================================
     def post_publicacoes(self, date_colect, value_colect, sensor_uuid):
+        data = self.get_sensores(sensor_uuid)
+        sensor_id = data[0][0]
+
         cursor = self.connection.cursor()
 
-        postgres_insert_query = """ INSERT INTO publicacoes (datacoleta, valorcoletado, sensor_uuid) VALUES (%s,%s,%s)"""
-        record_to_insert = (date_colect, value_colect, sensor_uuid)
+        postgres_insert_query = """ INSERT INTO publicacoes (datacoleta, valorcoletado, sensor_id) VALUES (%s,%s,%s)"""
+        record_to_insert = (date_colect, value_colect, sensor_id)
         cursor.execute(postgres_insert_query, record_to_insert)
 
         self.connection.commit()
@@ -124,16 +140,24 @@ class Db(object):
         self.connection.commit()
 
     #=====================================================================================================================
-    def post_servidoresborda(self, uuid, name):
+    def post_servidoresborda(self, uuid, name, ip, port, username, password):
         cursor = self.connection.cursor()
+        if(len(self.get_servidoresborda(uuid))==0):
+            postgres_insert_query = """ INSERT INTO servidoresborda (nome, uuid, ip, porta, usuario, senha) VALUES (%s,%s,%s,%s,%s,%s)"""
+            record_to_insert = (name, uuid, ip, port, username, password)
+            cursor.execute(postgres_insert_query, record_to_insert)
 
-        postgres_insert_query = """ INSERT INTO servidoresborda (nome, uuid) VALUES (%s,%s)"""
-        record_to_insert = (name, uuid)
-        cursor.execute(postgres_insert_query, record_to_insert)
-
-        self.connection.commit()
-        count = cursor.rowcount
-        print (count, "Record inserted successfully into ServidoresBorda table")
+            self.connection.commit()
+            count = cursor.rowcount
+            print (count, "Record inserted successfully into ServidoresBorda table")
+        else:
+            msg = 'Tentativa de inserir um servidor de borda com UUID que já existe'
+            postgres_insert_query = """ INSERT INTO error (msg, servidorborda_uuid) VALUES (%s,%s)"""
+            record_to_insert = (msg, uuid)
+            cursor.execute(postgres_insert_query, record_to_insert)
+            self.connection.commit()
+            count = cursor.rowcount
+            print(count, "Record inserted successfully into error table")
 
     def get_servidoresborda(self, uuid):
         cursor = self.connection.cursor()
@@ -153,16 +177,26 @@ class Db(object):
         cursor.execute(postgreSQL_select_Query)
         self.connection.commit()
     
-    def post_gateway(self, uuid, name):
+    def post_gateway(self, uuid, name, board_uuid):
         cursor = self.connection.cursor()
+        if(len(self.get_gateway(uuid))==0):
+            data = self.get_servidoresborda(board_uuid)
+            board_id = data[0][0]
+            postgres_insert_query = """ INSERT INTO gateways (uuid, nome, servidorborda_id) VALUES (%s,%s,%s)"""
+            record_to_insert = (uuid, name, board_id)
+            cursor.execute(postgres_insert_query, record_to_insert)
 
-        postgres_insert_query = """ INSERT INTO gateways (uuid, nome) VALUES (%s,%s)"""
-        record_to_insert = (uuid, name)
-        cursor.execute(postgres_insert_query, record_to_insert)
-
-        self.connection.commit()
-        count = cursor.rowcount
-        print (count, "Record inserted successfully into gateways table")
+            self.connection.commit()
+            count = cursor.rowcount
+            print (count, "Record inserted successfully into gateways table")
+        else:
+            msg = "Tentativa de inserir um gateway com UUID que já existe"
+            postgres_insert_query = """ INSERT INTO error (msg, gateway_uuid) VALUES (%s,%s)"""
+            record_to_insert = (msg, uuid)
+            cursor.execute(postgres_insert_query, record_to_insert)
+            self.connection.commit()
+            count = cursor.rowcount
+            print(count, "Record inserted successfully into error table")
     
     def get_gateway(self, uuid):
         cursor = self.connection.cursor()
@@ -181,7 +215,14 @@ class Db(object):
         cursor.execute(postgreSQL_select_Query)
         self.connection.commit()
     
-
+    def post_error(self, msg, sensor, board, gateway, driver):
+        cursor = self.connection.cursor()
+        postgres_insert_query = """ INSERT INTO error (msg, sensor_uuid, servidorborda_uuid, gateway_uuid, driver) VALUES (%s,%s,%s,%s,%s)"""
+        record_to_insert = (msg, sensor, board, gateway, driver)
+        cursor.execute(postgres_insert_query, record_to_insert)
+        self.connection.commit()
+        count = cursor.rowcount
+        print(count, "Record inserted successfully into error table")
 
 # try:
 #     connection = psycopg2.connect(user = "postgres",
