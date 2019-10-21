@@ -17,6 +17,8 @@ import json
 sub = Subscriber()
 sub.add_subscribe("contextserver")
 
+sub.add_subscribe('adenauer')
+
 
 sub.add_subscribe('ifarming')
 

@@ -66,21 +66,15 @@ class Subscriber(object):
         pass
 
     def save_data_edge_server(self, data, topic):
-        #print(data)
+        print(data)
         #if(data['topic'] == "contextServer"):
-            #print("contextServer Topic")
-            #db = Db("postgres","UFPEL2o19","127.0.0.1","5432","contextserver")
-        #elif(data['topic'] == "iFarming"):
-            #print("iFarming Topic")
-            #db = Db("postgres","UFPEL2o19","127.0.0.1","5432","ifarming")
-        #elif(data['topic'] == "exehda-ft"):
-            #print("exehda-ft Topic")
+        #print("topic: " + topic)
         db = Db("postgres","UFPEL2o19","127.0.0.1","5432", topic) 
-        if data['type'] == "pub":
+        if data['type'] == "collect" or data['type'] == "pub":
             #print(data['data'])
             #self.db.get_servidoresborda()
             db.post_publicacoes(data['date'],data['data'],data['uuid_sensor'])
-        elif data['type'] == "conf":
+        elif data['type'] == "configuration":
             print("-------------data------------")
            # print(data)
             # Verificar se os SB estão cadastrados
