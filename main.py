@@ -4,7 +4,7 @@
 from read_json import *
 
 read_json = Read_JSON()
-jsonR = json_read.read("configuration")
+jsonR = read_json.read("configuration")
 
 # Informações de acesso ao Broker
 username = jsonR['broker_mqtt']['user']

@@ -1,19 +1,19 @@
 { 
-  	"type": "conf",  
-  	"version": 1,  	
-  	"network":{
-    	"name": "LUPS-2",
-      	"password": "Lups@2019"
-  	},
-  	"context_server":{
-      "name": "CS1",
-      "uuid": "89b349a7-77e5-49e1-8d1f-ba962bee408f"
+    "type": "conf",
+    "version": 1,
+    "network":{
+        "name": "LUPS-2",
+        "password": "Lups@2019"
     },
-  	"broker_mqtt":{
-      	"ip": "127.0.0.1",
-      	"port": 1883,
-      	"user": "middleware",
-      	"password": "exehda",
+    "context_server":{
+        "name": "CS1",
+        "uuid": "89b349a7-77e5-49e1-8d1f-ba962bee408f"
+    },
+    "broker_mqtt":{
+        "ip": "127.0.0.1",
+        "port": 1883,
+        "user": "middleware",
+        "password": "exehda",
     },
     "topics": ["contextserver"]
 }
