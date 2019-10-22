@@ -10,9 +10,7 @@ from event_treatment import *
 class IPC(object):
     """docstring for IPC"""
 
-    def __init__(self, object_event_treatment, username, password, host, port, topics):
-        self.event_treatment = object_event_treatment
-
+    def __init__(self, username, password, host, port):
         # ============ Conexão com o Broker ============
         self.client = paho.Client()
         self.client.on_connect = self.on_connect
@@ -24,7 +22,6 @@ class IPC(object):
         #==================================================
         
         # Este tópico é utilizado para receber os dados dos gateways       
-        self.add_subscribe(topics)
 
         # Iniciaiza a conexão com o Broker
         client_loop(self.client).start()
