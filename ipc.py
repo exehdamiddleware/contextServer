@@ -24,7 +24,7 @@ class IPC(object):
         #==================================================
         
         # Este tópico é utilizado para receber os dados dos gateways       
-        self.add_subscribe_ES(topics)
+        self.add_subscribe(topics)
 
         # Iniciaiza a conexão com o Broker
         client_loop(self.client).start()
@@ -44,7 +44,8 @@ class IPC(object):
 
     # Recebe a mensagem do broker e envia para o processamento de eventos para tratar a mensagem
     def on_message(self, mosq, obj, msg):
-        print("Receive")
+        print(msg.payload.decode("utf-8"))
+        print("========================================================")
         self.event_treatment.process_event(json.loads(msg.payload.decode("utf-8")),msg.topic)
         
     # Envia uma publicação para o Servidor de Contexto

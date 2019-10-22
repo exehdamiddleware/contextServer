@@ -13,7 +13,7 @@ class Event_Treatment(object):
         print("ADD IPC")
         try:
             self.ipc = object_ipc
-            self.device = Device_Process(self.ipc, self.process_configuration_db)
+            #self.device = Device_Process(self.ipc, self.process_configuration_db)
         except Exception as e:
             print(str(e))
 

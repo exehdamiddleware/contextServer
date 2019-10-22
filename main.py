@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from read_json import *
+from event_treatment import *
+from ipc import *
 
 read_json = Read_JSON()
 jsonR = read_json.read("configuration")
@@ -18,7 +20,7 @@ topics = jsonR['topics']
 topics.append("ES")
 
 
-event_treatment = Event_Treatment(jsonR)
+event_treatment = Event_Treatment()
 ipc = IPC(event_treatment, username, password, host, port, topics)
 
 event_treatment.add_object_ipc(ipc)

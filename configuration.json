@@ -13,7 +13,7 @@
         "ip": "127.0.0.1",
         "port": 1883,
         "user": "middleware",
-        "password": "exehda",
+        "password": "exehda"
     },
     "topics": ["contextserver"]
 }
