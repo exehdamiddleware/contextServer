@@ -17,7 +17,7 @@ port = jsonR['broker_mqtt']['port']
 
 # Lista de tópicos + ES onde o Servidor de Contexto recebe as informações das Bordas
 topics = jsonR['topics']
-topics.append("ES")
+topics.append("contextserver")
 
 
 event_treatment = Event_Treatment()

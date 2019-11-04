@@ -44,7 +44,7 @@ class IPC(object):
 
     # Recebe a mensagem do broker e envia para o processamento de eventos para tratar a mensagem
     def on_message(self, mosq, obj, msg):
-        print(msg.payload.decode("utf-8"))
+        #print(msg.payload.decode("utf-8"))
         print("========================================================")
         self.event_treatment.process_event(json.loads(msg.payload.decode("utf-8")),msg.topic)
         

@@ -69,7 +69,7 @@ class Db(object):
         
         return data
     #=====================================================================================================================
-    def post_sensores(self, name, uuid, pin, driver, status, gateway, board):
+    def post_sensores(self, name, uuid, pin, driver, status, gateway, board, type):
         cursor = self.connection.cursor()
         if (len(self.get_sensores(uuid)) ==0 ):
             data = self.get_servidoresborda(board)
@@ -77,8 +77,8 @@ class Db(object):
             data = self.get_gateway(gateway)
             gateway_id = data[0][0]
 
-            postgres_insert_query = """ INSERT INTO sensores (nome, uuid, status, pin, driver, gateway_id, servidorborda_id) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
-            record_to_insert = (name, uuid, status, pin, driver, gateway_id, board_id)
+            postgres_insert_query = """ INSERT INTO sensores (nome, uuid, status, pin, driver, gateway_id, servidorborda_id, tiposensor_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+            record_to_insert = (name, uuid, status, pin, driver, gateway_id, board_id, type)
             cursor.execute(postgres_insert_query, record_to_insert)
 
             self.connection.commit()
@@ -141,6 +141,8 @@ class Db(object):
 
     #=====================================================================================================================
     def post_servidoresborda(self, uuid, name, ip, port, username, password):
+        print("POST")
+        print(uuid, name, ip, port, username, password)
         cursor = self.connection.cursor()
         if(len(self.get_servidoresborda(uuid))==0):
             postgres_insert_query = """ INSERT INTO servidoresborda (nome, uuid, ip, porta, usuario, senha) VALUES (%s,%s,%s,%s,%s,%s)"""
